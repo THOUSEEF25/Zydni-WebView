@@ -23,13 +23,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import java.io.File
 import java.io.IOException
-import java.security.NoSuchAlgorithmException
-import java.security.SecureRandom
-import java.security.spec.InvalidKeySpecException
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.crypto.SecretKey
-import javax.crypto.spec.SecretKeySpec
 
 class MainActivity : Activity() {
     private lateinit var mContext: Context
@@ -139,19 +134,8 @@ class MainActivity : Activity() {
 
                 Log.d(TAG, "URL: " + url!!)
                 if (internetCheck(mContext)) {
-                    // If you wnat to open url inside then use
-                    view.loadUrl(url);
-
-                    // if you wanna open outside of app
-                    /*if (url.contains(URL)) {
-                        view.loadUrl(url)
-                        return false
-                    }else {
-                        // Otherwise, give the default behavior (open in browser)
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        startActivity(intent)
-                        return true
-                    }*/
+                    // If you want to open url inside then use
+                    view.loadUrl(url)
                 } else {
                     prgs.visibility = View.GONE
                     mWebView.visibility = View.GONE
@@ -191,7 +175,7 @@ class MainActivity : Activity() {
         mWebView.webChromeClient = object : WebChromeClient() {
             override fun onShowFileChooser(
                 webView: WebView, filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
+                fileChooserParams: FileChooserParams): Boolean {
                 if (mFilePathCallback != null) {
                     mFilePathCallback!!.onReceiveValue(null)
                 }
@@ -224,11 +208,10 @@ class MainActivity : Activity() {
                 contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
                 contentSelectionIntent.type = "image/*"
 
-                val intentArray: Array<Intent?>
-                if (takePictureIntent != null) {
-                    intentArray = arrayOf(takePictureIntent)
+                val intentArray: Array<Intent?> = if (takePictureIntent != null) {
+                    arrayOf(takePictureIntent)
                 } else {
-                    intentArray = arrayOfNulls(0)
+                    arrayOfNulls(0)
                 }
 
                 val chooserIntent = Intent(Intent.ACTION_CHOOSER)
@@ -254,7 +237,7 @@ class MainActivity : Activity() {
         return File.createTempFile(
             imageFileName, /* prefix */
             ".jpg", /* suffix */
-            storageDir      /* directory */
+            storageDir   /* directory */
         )
     }
 
@@ -267,7 +250,7 @@ class MainActivity : Activity() {
         var results: Array<Uri>? = null
 
         // Check that the response is a good one
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (data == null) {
                 // If there is not data, then we may have taken a photo
                 if (mCameraPhotoPath != null) {
@@ -305,32 +288,18 @@ class MainActivity : Activity() {
 
     companion object {
         internal var TAG = "---MainActivity"
-        val INPUT_FILE_REQUEST_CODE = 1
-        val EXTRA_FROM_NOTIFICATION = "EXTRA_FROM_NOTIFICATION"
-
-
-        //for security
-        @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
-        fun generateKey(): SecretKey {
-            val random = SecureRandom()
-            val key = byteArrayOf(1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0)
-            //random.nextBytes(key);
-            return SecretKeySpec(key, "AES")
-        }
+        const val INPUT_FILE_REQUEST_CODE = 1
+        const val EXTRA_FROM_NOTIFICATION = "EXTRA_FROM_NOTIFICATION"
 
         fun internetCheck(context: Context): Boolean {
             var available = false
             val connectivity = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-            if (connectivity != null) {
-                val networkInfo = connectivity.allNetworkInfo
-                if (networkInfo != null) {
-                    for (i in networkInfo.indices) {
-                        if (networkInfo[i].state == NetworkInfo.State.CONNECTED) {
-                            available = true
-                            break
-                        }
-                    }
+            val networkInfo = connectivity.allNetworkInfo
+            for (i in networkInfo.indices) {
+                if (networkInfo[i].state == NetworkInfo.State.CONNECTED) {
+                    available = true
+                    break
                 }
             }
             return available
