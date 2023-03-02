@@ -8,8 +8,6 @@ import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -22,7 +20,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import java.io.File
 import java.io.IOException
@@ -85,23 +82,6 @@ class MainActivity : Activity() {
             layoutNoInternet.visibility = View.GONE
             requestForWebview()
         }
-
-        /** If you want to show adMob */
-        //showAdMob();
-
-        /*var secret: SecretKey? = null
-        val toEncrypt = URL
-        try {
-            secret = generateKey()
-            val toDecrypt = encryptMsg(toEncrypt, secret)
-
-            Log.d(TAG, toDecrypt.toString())
-
-            Log.d(TAG, decryptMsg(toDecrypt, secret))
-        } catch (e: Exception) {
-            Log.e(TAG, "" + e.message)
-        }*/
-
     }
 
 
@@ -125,7 +105,6 @@ class MainActivity : Activity() {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private fun requestWebView() {
         /** Layout of webview screen View  */
         if (internetCheck(mContext)) {
@@ -151,8 +130,7 @@ class MainActivity : Activity() {
         mWebView.settings.domStorageEnabled = true
         //mWebView.settings.setAppCacheEnabled(true)
         mWebView.settings.databaseEnabled = true
-        //mWebView.getSettings().setDatabasePath(
-        //        this.getFilesDir().getPath() + this.getPackageName() + "/databases/");
+        //mWebView.settings.databasePath = this.filesDir.path + this.packageName + "/databases/";
 
         // this force use chromeWebClient
         mWebView.settings.setSupportMultipleWindows(false)
@@ -183,21 +161,6 @@ class MainActivity : Activity() {
 
                 return true
             }
-
-            /* @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if(internetCheck(mContext)) {
-                    mWebView.setVisibility(View.VISIBLE);
-                    layoutNoInternet.setVisibility(View.GONE);
-                    //view.loadUrl(url);
-                }else{
-                    prgs.setVisibility(View.GONE);
-                    mWebView.setVisibility(View.GONE);
-                    layoutSplash.setVisibility(View.GONE);
-                    layoutNoInternet.setVisibility(View.VISIBLE);
-                }
-                return false;
-            }*/
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
@@ -295,40 +258,6 @@ class MainActivity : Activity() {
         )
     }
 
-
-    /**
-     * Convenience method to set some generic defaults for a
-     * given WebView
-     */
-    /*@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setUpWebViewDefaults(WebView webView) {
-        WebSettings settings = webView.getSettings();
-
-        // Enable Javascript
-        settings.setJavaScriptEnabled(true);
-
-        // Use WideViewport and Zoom out if there is no viewport defined
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-
-        // Enable pinch to zoom without the zoom buttons
-        settings.setBuiltInZoomControls(true);
-
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-            // Hide the zoom controls for HONEYCOMB+
-            settings.setDisplayZoomControls(false);
-        }
-
-        // Enable remote debugging via chrome://inspect
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-
-        // We set the WebViewClient to ensure links are consumed by the WebView rather
-        // than passed to a browser if it can
-        mWebView.setWebViewClient(new WebViewClient());
-    }*/
-
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
             super.onActivityResult(requestCode, resultCode, data)
@@ -355,21 +284,6 @@ class MainActivity : Activity() {
         mFilePathCallback!!.onReceiveValue(results)
         mFilePathCallback = null
         return
-    }
-
-    private fun showAdMob() {
-        /** Layout of AdMob screen View  */
-        /*layoutFooter = (LinearLayout) findViewById(R.id.layout_footer);
-          adView = (AdView) findViewById(R.id.adMob);
-          try {
-           if(internetCheck(mContext)){
-               //initializeAdMob();
-           }else{
-               Log.d("---------","--no internet-");
-           }
-       }catch (Exception ex){
-           Log.d("-----------", ""+ex);
-       }*/
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -403,68 +317,6 @@ class MainActivity : Activity() {
             //random.nextBytes(key);
             return SecretKeySpec(key, "AES")
         }
-
-        /*@Throws(NoSuchAlgorithmException::class, NoSuchPaddingException::class, InvalidKeyException::class, InvalidParameterSpecException::class, IllegalBlockSizeException::class, BadPaddingException::class, UnsupportedEncodingException::class)
-        fun encryptMsg(message: String, secret: SecretKey): ByteArray {
-            var cipher: Cipher? = null
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            cipher!!.init(Cipher.ENCRYPT_MODE, secret)
-            return cipher.doFinal(message.toByteArray(charset("UTF-8")))
-        }
-
-        @Throws(NoSuchPaddingException::class, NoSuchAlgorithmException::class, InvalidParameterSpecException::class, InvalidAlgorithmParameterException::class, InvalidKeyException::class, BadPaddingException::class, IllegalBlockSizeException::class, UnsupportedEncodingException::class)
-        fun decryptMsg(cipherText: ByteArray, secret: SecretKey): String {
-            var cipher: Cipher? = null
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            cipher!!.init(Cipher.DECRYPT_MODE, secret)
-            return String(cipher.doFinal(cipherText), charset("UTF-8"))
-        }*/
-
-
-        /**** Initial AdMob  */
-        /**
-         * private void initializeAdMob() {
-         * Log.d("----","Initial Call");
-         * adView.setVisibility(View.GONE);
-         * AdRequest adRequest = new AdRequest.Builder()
-         * .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-         * //.addTestDevice("F901B815E265F8281206A2CC49D4E432")
-         * .build();
-         * adView.setAdListener(new AdListener() {
-         * @Override
-         * public void onAdLoaded() {
-         * super.onAdLoaded();
-         * runOnUiThread(new Runnable() {
-         * @Override
-         * public void run() {
-         * adView.setVisibility(View.VISIBLE);
-         * Log.d("----","Visible");
-         * }
-         * });
-         * }
-         * });
-         * adView.loadAd(adRequest);
-         * }
-         */
-        /**
-         * public static void showAlertDialog(Context mContext, String mTitle, String mBody, int mImage){
-         * android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
-         * builder.setCancelable(true);
-         * builder.setIcon(mImage);
-         * if(mTitle.length()>0)
-         * builder.setTitle(mTitle);
-         * if(mBody.length()>0)
-         * builder.setTitle(mBody);
-         *
-         * builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-         * @Override
-         * public void onClick(DialogInterface dialog, int which) {
-         * dialog.dismiss();
-         * }
-         * });
-         *
-         * builder.create().show();
-         * } */
 
         fun internetCheck(context: Context): Boolean {
             var available = false

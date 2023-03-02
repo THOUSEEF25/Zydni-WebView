@@ -39,7 +39,7 @@
                 android:text="@string/app_name"
                 android:layout_below="@+id/app_logo"
                 android:layout_marginTop="20dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="#fff"
                 android:visibility="gone"
                 android:textStyle="bold"
@@ -98,7 +98,7 @@
                 android:text="Whoops!"
                 android:layout_below="@+id/img_no_internet"
                 android:layout_marginTop="20dp"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"/>
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_title"
                 android:layout_marginTop="20dp"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textColor="@color/colorWhite"
                 android:layout_centerHorizontal="true"
                 android:textAlignment="center"
@@ -120,7 +120,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/txt_detail"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:text="Try Again"/>
         </RelativeLayout>
         <ProgressBar
@@ -133,21 +134,5 @@
             android:progressDrawable="@drawable/cs_custom_progressbar"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
     </RelativeLayout>
-    <!--LinearLayout
-        android:id="@+id/layout_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adMob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="4dp"
-            android:visibility="invisible"
-            ads:adUnitId="@string/admob_banner"
-            ads:adSize="BANNER"/>
-    </LinearLayout-->
+
 </RelativeLayout>
